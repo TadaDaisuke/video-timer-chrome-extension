@@ -12,8 +12,8 @@ indicatorDiv.setAttribute("class", "video-timer-indicator");
 const todayString = new Date(Date.now()).toDateString();
 const lastDate = localStorage.getItem("videoTimer.lastDate");
 if (!lastDate || lastDate !== todayString) {
-    // 前回から日付が変わっていたら、視聴可能残り時間を初期化する
-    resetRemainSecondsOfWatch();
+    // 当日初回起動の場合、視聴可能状態から開始
+    displayIndicator(resetRemainSecondsOfWatch());
 }
 localStorage.setItem("videoTimer.lastDate", todayString);
 
@@ -43,16 +43,12 @@ setInterval(function () {
                 localStorage.setItem("videoTimer.remainSecondsOfWatch", remainSecondsOfWatch - 1);
             }
         }
-    } else {
-        // 初期状態
-        resetRemainSecondsOfWatch();
-        displayIndicator(remainSecondsOfWatch);
     }
 }, 1000);
 
 function resetRemainSecondsOfWatch() {
     localStorage.removeItem("videoTimer.breakStartDateTime");
-    var remainSecondsOfWatch = WATCH_MINUTES * 60;
+    const remainSecondsOfWatch = WATCH_MINUTES * 60;
     localStorage.setItem("videoTimer.remainSecondsOfWatch", remainSecondsOfWatch);
     return remainSecondsOfWatch;
 }
