@@ -1,6 +1,6 @@
 {
     "name": "Video Timer",
-    "version": "21.5.31.1",
+    "version": "21.9.5.1",
     "manifest_version": 2,
     "description": "YouTubeを1時間視聴する毎に15分の休憩時間を設けるChrome拡張。",
     "content_scripts": [{

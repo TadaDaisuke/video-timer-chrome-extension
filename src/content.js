@@ -3,11 +3,30 @@ const BREAK_MINUTES = 15;
 
 const overlayDiv = document.createElement("div");
 overlayDiv.setAttribute("id", "video-timer-overlay");
-overlayDiv.setAttribute("class", "video-timer-overlay");
 
 const indicatorDiv = document.createElement("div");
 indicatorDiv.setAttribute("id", "video-timer-indicator");
-indicatorDiv.setAttribute("class", "video-timer-indicator");
+
+const coffeeIcon = document.createElement("div");
+coffeeIcon.setAttribute("id", "video-timer-coffee-icon");
+coffeeIcon.innerHTML = "&#x2615;";
+coffeeIcon.addEventListener("click", displayDialog);
+
+const dialogDiv = document.createElement("div");
+dialogDiv.setAttribute("id", "video-timer-dialog");
+dialogDiv.innerText = "今すぐ休憩しますか？";
+
+const okButton = document.createElement("div");
+okButton.setAttribute("id", "video-timer-ok-button");
+okButton.setAttribute("class", "video-timer-button");
+okButton.innerText = "する";
+okButton.addEventListener("click", startBreak);
+
+const cancelButton = document.createElement("div");
+cancelButton.setAttribute("id", "video-timer-cancel-button");
+cancelButton.setAttribute("class", "video-timer-button");
+cancelButton.innerText = "しない";
+cancelButton.addEventListener("click", hideDialog);
 
 const todayString = new Date(Date.now()).toDateString();
 const lastDate = localStorage.getItem("videoTimer.lastDate");
@@ -32,8 +51,7 @@ setInterval(function () {
     } else if (remainSecondsOfWatch != null) {
         if (remainSecondsOfWatch <= 0) {
             // 視聴可能状態終了＆休憩開始
-            displayOverlay(BREAK_MINUTES * 60);
-            resetBreakStartDateTime();
+            startBreak();
         } else {
             // 視聴可能状態
             displayIndicator(remainSecondsOfWatch);
@@ -59,18 +77,21 @@ function displayIndicator(remainSecondsOfWatch) {
     }
     document.body.classList.remove("stop-scrolling");
     overlayDiv.innerText = "";
-    indicatorDiv.innerText = `視聴可能時間 残り ${formatTime(remainSecondsOfWatch)}`;
+    indicatorDiv.innerHTML = `視聴可能時間 残り ${formatTime(remainSecondsOfWatch)}&nbsp;`;
+    indicatorDiv.appendChild(coffeeIcon);
     if (!document.getElementById("video-timer-indicator")) {
         document.body.appendChild(indicatorDiv);
     }
 }
 
-function resetBreakStartDateTime() {
+function startBreak() {
+    displayOverlay(BREAK_MINUTES * 60);
     localStorage.removeItem("videoTimer.remainSecondsOfWatch");
     localStorage.setItem("videoTimer.breakStartDateTime", Date.now());
 }
 
 function displayOverlay(remainSecondsOfBreak) {
+    hideDialog();
     if (document.getElementById("video-timer-indicator")) {
         indicatorDiv.parentNode.removeChild(indicatorDiv);
     }
@@ -83,6 +104,20 @@ function displayOverlay(remainSecondsOfBreak) {
         video.pause();
     }
     document.body.classList.add("stop-scrolling");
+}
+
+function displayDialog() {
+    if (!document.getElementById("video-timer-dialog")) {
+        document.body.appendChild(dialogDiv);
+        dialogDiv.appendChild(okButton);
+        dialogDiv.appendChild(cancelButton);
+    }
+}
+
+function hideDialog() {
+    if (document.getElementById("video-timer-dialog")) {
+        dialogDiv.parentNode.removeChild(dialogDiv);
+    }
 }
 
 function formatTime(seconds) {

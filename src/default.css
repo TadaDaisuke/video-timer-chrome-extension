@@ -1,4 +1,4 @@
-.video-timer-overlay {
+#video-timer-overlay {
     z-index: 10000;
     width: 100%;
     height: 100%;
@@ -12,12 +12,12 @@
     font-size: 2rem;
 }
 
-.video-timer-indicator {
+#video-timer-indicator {
     z-index: 10001;
-    width: 300px;
+    width: 330px;
     height: 60px;
     position: fixed;
-    right: 24px;
+    right: 16px;
     bottom: 6px;
     margin: 2rem auto;
     line-height: 52px;
@@ -27,6 +27,55 @@
     color: #fff;
     background-color: rgba(0, 57, 127, 0.75);
     font-size: 2rem;
+}
+
+#video-timer-dialog {
+    z-index: 10002;
+    width: 520px;
+    height: 200px;
+    padding-bottom: 48px;
+    border: 3px solid #fff;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: rgba(0, 57, 127);
+    font-size: 2rem;
+}
+
+.video-timer-button {
+    width: 120px;
+    height: 48px;
+    border: 3px solid #fff;
+    position: absolute;
+    bottom: 18px;
+    margin: 2rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: rgba(0, 57, 127);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+#video-timer-ok-button {
+    left: 120px;
+}
+
+#video-timer-cancel-button {
+    right: 120px;
+}
+
+#video-timer-coffee-icon {
+    font-size: 3rem;
+    cursor: pointer;
 }
 
 .stop-scrolling {
