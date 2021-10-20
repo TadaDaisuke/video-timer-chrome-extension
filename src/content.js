@@ -36,6 +36,13 @@ if (!lastDate || lastDate !== todayString) {
 }
 localStorage.setItem("videoTimer.lastDate", todayString);
 
+// 休憩中はキー入力を無効化する
+document.addEventListener("keydown", event => {
+    if (document.getElementById("video-timer-overlay")) {
+        event.preventDefault();
+    }
+}, true);
+
 setInterval(function () {
     const remainSecondsOfWatch = localStorage.getItem("videoTimer.remainSecondsOfWatch");
     const breakStartDateTime = localStorage.getItem("videoTimer.breakStartDateTime");
