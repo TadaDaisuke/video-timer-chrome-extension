@@ -1,6 +1,6 @@
 # Video Timer
 
-YouTubeを1時間視聴する毎に15分の休憩時間を設けるChrome拡張。
+YouTubeを40分視聴する毎に10分の休憩時間を設けるChrome拡張。
 
 ## インストール方法
 
