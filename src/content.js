@@ -1,5 +1,5 @@
-const WATCH_MINUTES = 60;
-const BREAK_MINUTES = 15;
+const WATCH_MINUTES = 40;
+const BREAK_MINUTES = 10;
 
 const overlayDiv = document.createElement("div");
 overlayDiv.setAttribute("id", "video-timer-overlay");
