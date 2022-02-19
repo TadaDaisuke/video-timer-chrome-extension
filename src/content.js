@@ -62,8 +62,7 @@ setInterval(function () {
         } else {
             // 視聴可能状態
             displayIndicator(remainSecondsOfWatch);
-            const video = document.getElementsByTagName("video")[0];
-            if (video != null && !video.paused) {
+            if (videoIsPlaying()) {
                 // 再生中
                 localStorage.setItem("videoTimer.remainSecondsOfWatch", remainSecondsOfWatch - 1);
             }
@@ -129,4 +128,14 @@ function hideDialog() {
 
 function formatTime(seconds) {
     return `${Math.floor(seconds / 60)}分${("0" + (seconds % 60)).slice(-2)}秒`;
+}
+
+function videoIsPlaying() {
+    const videos = document.getElementsByTagName("video");
+    for (var i = 0; i < videos.length; i++) {
+        if (!videos[i].paused) {
+            return true;
+        }
+    }
+    return false;
 }
