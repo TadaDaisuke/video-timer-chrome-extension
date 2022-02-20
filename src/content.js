@@ -105,9 +105,11 @@ function displayOverlay(remainSecondsOfBreak) {
     if (!document.getElementById("video-timer-overlay")) {
         document.body.appendChild(overlayDiv);
     }
-    const video = document.getElementsByTagName("video")[0];
-    if (video != null && !video.paused) {
-        video.pause();
+    const videos = document.getElementsByTagName("video");
+    for (var i = 0; i < videos.length; i++) {
+        if (!videos[i].paused) {
+            videos[i].pause();
+        }
     }
     document.body.classList.add("stop-scrolling");
 }
