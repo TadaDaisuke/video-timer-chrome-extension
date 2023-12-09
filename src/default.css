@@ -9,7 +9,7 @@
     justify-content: center;
     color: #fff;
     background: rgba(0, 57, 127, 0.9);
-    font-size: 2rem;
+    font-size: 20px;
 }
 
 #video-timer-indicator {
@@ -19,14 +19,14 @@
     position: fixed;
     right: 16px;
     bottom: 6px;
-    margin: 2rem auto;
+    margin: 20px auto;
     line-height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     background-color: rgba(0, 57, 127, 0.75);
-    font-size: 2rem;
+    font-size: 20px;
 }
 
 #video-timer-dialog {
@@ -46,7 +46,7 @@
     justify-content: center;
     color: #fff;
     background-color: rgba(0, 57, 127);
-    font-size: 2rem;
+    font-size: 20px;
 }
 
 .video-timer-button {
@@ -55,13 +55,13 @@
     border: 3px solid #fff;
     position: absolute;
     bottom: 18px;
-    margin: 2rem auto;
+    margin: 20px auto;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     background-color: rgba(0, 57, 127);
-    font-size: 2rem;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -74,7 +74,7 @@
 }
 
 #video-timer-coffee-icon {
-    font-size: 3rem;
+    font-size: 30px;
     cursor: pointer;
 }
 
