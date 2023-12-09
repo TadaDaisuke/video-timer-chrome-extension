@@ -10,7 +10,7 @@ indicatorDiv.setAttribute("id", "video-timer-indicator");
 const coffeeIcon = document.createElement("div");
 coffeeIcon.setAttribute("id", "video-timer-coffee-icon");
 coffeeIcon.innerHTML = "&#x2615;";
-coffeeIcon.addEventListener("click", displayDialog);
+coffeeIcon.addEventListener("click", showDialog);
 
 const dialogDiv = document.createElement("div");
 dialogDiv.setAttribute("id", "video-timer-dialog");
@@ -33,7 +33,7 @@ chrome.storage.local.get(["videoTimer_lastDate"], result => {
     const lastDate = result.videoTimer_lastDate;
     if (!lastDate || lastDate !== todayString) {
         // 当日初回起動の場合、視聴可能状態から開始
-        displayIndicator(resetRemainSecondsOfWatch());
+        showDialog(resetRemainSecondsOfWatch());
     }
 });
 chrome.storage.local.set({ "videoTimer_lastDate": todayString });
@@ -53,10 +53,10 @@ setInterval(function () {
             const remainSecondsOfBreak = BREAK_MINUTES * 60 - Math.floor((Date.now() - Number(breakStartDateTime)) / 1000);
             if (remainSecondsOfBreak <= 0) {
                 // 休憩終了＆視聴可能状態開始
-                displayIndicator(resetRemainSecondsOfWatch());
+                showIndicator(resetRemainSecondsOfWatch());
             } else {
                 // 休憩中
-                displayOverlay(remainSecondsOfBreak);
+                showOverlay(remainSecondsOfBreak);
             }
         } else if (remainSecondsOfWatch != null) {
             if (remainSecondsOfWatch <= 0) {
@@ -64,8 +64,8 @@ setInterval(function () {
                 startBreak();
             } else {
                 // 視聴可能状態
-                displayIndicator(remainSecondsOfWatch);
-                if (videoIsPlaying()) {
+                showIndicator(remainSecondsOfWatch);
+                if (isAnyVideoPlaying()) {
                     // 再生中
                     chrome.storage.local.set({ "videoTimer_remainSecondsOfWatch": remainSecondsOfWatch - 1 });
                 }
@@ -81,7 +81,7 @@ function resetRemainSecondsOfWatch() {
     return remainSecondsOfWatch;
 }
 
-function displayIndicator(remainSecondsOfWatch) {
+function showIndicator(remainSecondsOfWatch) {
     if (document.getElementById("video-timer-overlay")) {
         overlayDiv.parentNode.removeChild(overlayDiv);
     }
@@ -95,12 +95,12 @@ function displayIndicator(remainSecondsOfWatch) {
 }
 
 function startBreak() {
-    displayOverlay(BREAK_MINUTES * 60);
+    showOverlay(BREAK_MINUTES * 60);
     chrome.storage.local.remove(["videoTimer_remainSecondsOfWatch"]);
     chrome.storage.local.set({ "videoTimer_breakStartDateTime": Date.now() });
 }
 
-function displayOverlay(remainSecondsOfBreak) {
+function showOverlay(remainSecondsOfBreak) {
     hideDialog();
     if (document.getElementById("video-timer-indicator")) {
         indicatorDiv.parentNode.removeChild(indicatorDiv);
@@ -118,7 +118,7 @@ function displayOverlay(remainSecondsOfBreak) {
     document.body.classList.add("stop-scrolling");
 }
 
-function displayDialog() {
+function showDialog() {
     if (!document.getElementById("video-timer-dialog")) {
         document.body.appendChild(dialogDiv);
         dialogDiv.appendChild(okButton);
@@ -136,7 +136,7 @@ function formatTime(seconds) {
     return `${Math.floor(seconds / 60)}分${("0" + (seconds % 60)).slice(-2)}秒`;
 }
 
-function videoIsPlaying() {
+function isAnyVideoPlaying() {
     const videos = document.getElementsByTagName("video");
     for (var i = 0; i < videos.length; i++) {
         if (!videos[i].paused) {
