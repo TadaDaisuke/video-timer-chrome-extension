@@ -29,12 +29,14 @@ cancelButton.innerText = "しない";
 cancelButton.addEventListener("click", hideDialog);
 
 const todayString = new Date(Date.now()).toDateString();
-const lastDate = localStorage.getItem("videoTimer.lastDate");
-if (!lastDate || lastDate !== todayString) {
-    // 当日初回起動の場合、視聴可能状態から開始
-    displayIndicator(resetRemainSecondsOfWatch());
-}
-localStorage.setItem("videoTimer.lastDate", todayString);
+chrome.storage.local.get(["videoTimer_lastDate"], result => {
+    const lastDate = result.videoTimer_lastDate;
+    if (!lastDate || lastDate !== todayString) {
+        // 当日初回起動の場合、視聴可能状態から開始
+        displayIndicator(resetRemainSecondsOfWatch());
+    }
+});
+chrome.storage.local.set({ "videoTimer_lastDate": todayString });
 
 // 休憩中はキー入力を無効化する
 document.addEventListener("keydown", event => {
@@ -44,36 +46,38 @@ document.addEventListener("keydown", event => {
 }, true);
 
 setInterval(function () {
-    const remainSecondsOfWatch = localStorage.getItem("videoTimer.remainSecondsOfWatch");
-    const breakStartDateTime = localStorage.getItem("videoTimer.breakStartDateTime");
-    if (breakStartDateTime != null) {
-        const remainSecondsOfBreak = BREAK_MINUTES * 60 - Math.floor((Date.now() - Number(breakStartDateTime)) / 1000);
-        if (remainSecondsOfBreak <= 0) {
-            // 休憩終了＆視聴可能状態開始
-            displayIndicator(resetRemainSecondsOfWatch());
-        } else {
-            // 休憩中
-            displayOverlay(remainSecondsOfBreak);
-        }
-    } else if (remainSecondsOfWatch != null) {
-        if (remainSecondsOfWatch <= 0) {
-            // 視聴可能状態終了＆休憩開始
-            startBreak();
-        } else {
-            // 視聴可能状態
-            displayIndicator(remainSecondsOfWatch);
-            if (videoIsPlaying()) {
-                // 再生中
-                localStorage.setItem("videoTimer.remainSecondsOfWatch", remainSecondsOfWatch - 1);
+    chrome.storage.local.get(["videoTimer_remainSecondsOfWatch", "videoTimer_breakStartDateTime"], result => {
+        const remainSecondsOfWatch = result.videoTimer_remainSecondsOfWatch;
+        const breakStartDateTime = result.videoTimer_breakStartDateTime;
+        if (breakStartDateTime != null) {
+            const remainSecondsOfBreak = BREAK_MINUTES * 60 - Math.floor((Date.now() - Number(breakStartDateTime)) / 1000);
+            if (remainSecondsOfBreak <= 0) {
+                // 休憩終了＆視聴可能状態開始
+                displayIndicator(resetRemainSecondsOfWatch());
+            } else {
+                // 休憩中
+                displayOverlay(remainSecondsOfBreak);
+            }
+        } else if (remainSecondsOfWatch != null) {
+            if (remainSecondsOfWatch <= 0) {
+                // 視聴可能状態終了＆休憩開始
+                startBreak();
+            } else {
+                // 視聴可能状態
+                displayIndicator(remainSecondsOfWatch);
+                if (videoIsPlaying()) {
+                    // 再生中
+                    chrome.storage.local.set({ "videoTimer_remainSecondsOfWatch": remainSecondsOfWatch - 1 });
+                }
             }
         }
-    }
+    });
 }, 1000);
 
 function resetRemainSecondsOfWatch() {
-    localStorage.removeItem("videoTimer.breakStartDateTime");
+    chrome.storage.local.remove(["videoTimer_breakStartDateTime"]);
     const remainSecondsOfWatch = WATCH_MINUTES * 60;
-    localStorage.setItem("videoTimer.remainSecondsOfWatch", remainSecondsOfWatch);
+    chrome.storage.local.set({ "videoTimer_remainSecondsOfWatch": remainSecondsOfWatch });
     return remainSecondsOfWatch;
 }
 
@@ -92,8 +96,8 @@ function displayIndicator(remainSecondsOfWatch) {
 
 function startBreak() {
     displayOverlay(BREAK_MINUTES * 60);
-    localStorage.removeItem("videoTimer.remainSecondsOfWatch");
-    localStorage.setItem("videoTimer.breakStartDateTime", Date.now());
+    chrome.storage.local.remove(["videoTimer_remainSecondsOfWatch"]);
+    chrome.storage.local.set({ "videoTimer_breakStartDateTime": Date.now() });
 }
 
 function displayOverlay(remainSecondsOfBreak) {

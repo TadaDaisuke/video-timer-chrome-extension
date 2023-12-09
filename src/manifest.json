@@ -1,18 +1,23 @@
 {
     "name": "Video Timer",
-    "version": "23.12.9.1",
+    "version": "23.12.9.2",
     "manifest_version": 3,
     "description": "動画を40分視聴する毎に10分の休憩時間を設けるChrome拡張。",
-    "content_scripts": [{
-        "matches": [
-            "https://*.youtube.com/*",
-            "https://*.tiktok.com/*"
-        ],
-        "css": [
-            "default.css"
-        ],
-        "js": [
-            "content.js"
-        ]
-    }]
+    "permissions": [
+        "storage"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*.youtube.com/*",
+                "https://*.tiktok.com/*"
+            ],
+            "css": [
+                "default.css"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
 }
