@@ -33,7 +33,7 @@ chrome.storage.local.get(["videoTimer_lastDate"], result => {
     const lastDate = result.videoTimer_lastDate;
     if (!lastDate || lastDate !== todayString) {
         // 当日初回起動の場合、視聴可能状態から開始
-        showDialog(resetRemainSecondsOfWatch());
+        showIndicator(resetRemainSecondsOfWatch());
     }
 });
 chrome.storage.local.set({ "videoTimer_lastDate": todayString });
