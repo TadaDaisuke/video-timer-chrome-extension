@@ -1,5 +1,6 @@
 :root {
     --video-timer-color-rgb: 0, 57, 127;
+    --video-timer-font-family: "Segoe UI", Meiryo, system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 #video-timer-overlay {
@@ -14,6 +15,7 @@
     color: #fff;
     background: rgba(var(--video-timer-color-rgb), 0.9);
     font-size: 20px;
+    font-family: var(--video-timer-font-family);
 }
 
 #video-timer-indicator {
@@ -31,6 +33,7 @@
     color: #fff;
     background-color: rgba(var(--video-timer-color-rgb), 0.75);
     font-size: 20px;
+    font-family: var(--video-timer-font-family);
 }
 
 #video-timer-dialog {
@@ -51,6 +54,7 @@
     color: #fff;
     background-color: rgba(var(--video-timer-color-rgb));
     font-size: 20px;
+    font-family: var(--video-timer-font-family);
 }
 
 .video-timer-button {
@@ -63,9 +67,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    background-color: rgba(var(--video-timer-color-rgb));
-    font-size: 20px;
+    color: inherit;
+    background-color: inherit;
+    font-size: inherit;
+    font-family: inherit;
     cursor: pointer;
 }
 
